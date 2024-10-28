@@ -18,13 +18,13 @@ namespace avx2_infernal_math
       const __m256 k1 = _mm256_set1_ps(-0.497228264809);
       const __m256 k2 = _mm256_set1_ps(0.0375291258097);
       const __m256 one = _mm256_set1_ps(1.0);
-      for (auto *i = arr; i <= in + size; i = i + 8)
+      for (size_t i = 0; i < size; i = i + 8)
       {
-        __m256 x = _mm256_loadu_ps(i);
+        __m256 x = _mm256_loadu_ps(in + i);
         __m256 x2 = _mm256_mul_ps(x, x);
         __m256 x4 = _mm256_mul_ps(x2, x2);
         __m256 result = _mm256_fmadd_ps(x4, k2, _mm256_fmadd_ps(x2, k1, one));
-        _mm256_store_ps(out, result);
+        _mm256_store_ps(out + i, result);
       }
     }
 
@@ -35,14 +35,14 @@ namespace avx2_infernal_math
       const __m256 k2 = _mm256_set1_ps(0.0375291258097);
       const __m256 one = _mm256_set1_ps(1.0);
       const __m256 pi_half = _mm256_set1_ps(k_pi_half);
-      for (auto *i = in; i <= in + size; i = i + 8)
+      for (size_t i = 0; i < size; i = i + 8)
       {
-        __m256 x1 = _mm256_loadu_ps(i);
+        __m256 x1 = _mm256_loadu_ps(in + i);
         __m256 x1 = _mm256_add_ps(x1, pi_half);
         __m256 x2 = _mm256_mul_ps(x1, x1);
         __m256 x4 = _mm256_mul_ps(x2, x2);
         __m256 result = _mm256_fmadd_ps(x4, k2, _mm256_fmadd_ps(x2, k1, one));
-        _mm256_store_ps(out, result);
+        _mm256_store_ps((out + i), result);
       }
     }
   } // namespace fast
@@ -60,9 +60,9 @@ namespace avx2_infernal_math
       const __m256 half = _mm256_set1_ps(0.5);
       const __m256 two = _mm256_set1_ps(2.0);
       const __m256 pi_half = _mm256_set1_ps(k_pi_half);
-      for (auto *i = in; i <= in + size; i = i + 8)
+      for (size_t i = 0; i < size; i = i + 8)
       {
-        __m256 x1 = _mm256_loadu_ps(i);
+        __m256 x1 = _mm256_loadu_ps(in + i);
         __m256 aa = _mm256_mul_ps(x1, pi_half_recip);
         __m256 bb = _mm256_round_ps(aa, 0);
         __m256 cc = _mm256_fmsub_ps(bb, pi, x1);
@@ -78,7 +78,7 @@ namespace avx2_infernal_math
         __m256 kk = _mm256_sub_ps(gg, jj);
         __m256 ll = _mm256_fmadd_ps(kk, two, one);
         __m256 mm = _mm256_mul_ps(ee, ll);
-        _mm256_store_ps(i, mm);
+        _mm256_store_ps((out + i), mm);
       }
     }
 
@@ -92,9 +92,9 @@ namespace avx2_infernal_math
       const __m256 one = _mm256_set1_ps(1.0);
       const __m256 half = _mm256_set1_ps(0.5);
       const __m256 two = _mm256_set1_ps(2.0);
-      for (auto *i = in; i <= in + size; i = i + 8)
+      for (size_t i = 0; i < size; i = i + 8)
       {
-        __m256 x0 = _mm256_loadu_ps(i);
+        __m256 x0 = _mm256_loadu_ps(in + i);
         __m256 x1 = _mm256_add_ps(x0, pi_half);
         __m256 aa = _mm256_mul_ps(x1, pi_half_recip);
         __m256 bb = _mm256_round_ps(aa, 0);
@@ -111,7 +111,7 @@ namespace avx2_infernal_math
         __m256 kk = _mm256_sub_ps(gg, jj);
         __m256 ll = _mm256_fmadd_ps(kk, two, one);
         __m256 mm = _mm256_mul_ps(ee, ll);
-        _mm256_store_ps(i, mm);
+        _mm256_store_ps((out + i), mm);
       }
     }
   } // namespace slow
