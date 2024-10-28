@@ -1,0 +1,1 @@
+This is a work in progress (mainly avx2) math library that uses simple fitting to calculate math functions 2-3 times faster than current intel intrinsics. This is possible by making assumptions about the input range and sacrificing accuracy for "good enough". Mainly useful for specific matrix solvers. UB beware!
