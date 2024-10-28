@@ -37,8 +37,8 @@ namespace avx2_infernal_math
       const __m256 pi_half = _mm256_set1_ps(k_pi_half);
       for (size_t i = 0; i < size; i = i + 8)
       {
-        __m256 x1 = _mm256_loadu_ps(in + i);
-        __m256 x1 = _mm256_add_ps(x1, pi_half);
+        __m256 x0 = _mm256_loadu_ps(in + i);
+        __m256 x1 = _mm256_add_ps(x0, pi_half);
         __m256 x2 = _mm256_mul_ps(x1, x1);
         __m256 x4 = _mm256_mul_ps(x2, x2);
         __m256 result = _mm256_fmadd_ps(x4, k2, _mm256_fmadd_ps(x2, k1, one));
